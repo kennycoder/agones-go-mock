@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 	"os"
+
+	agonesmock "github.com/kennycoder/agones-go-mock"
 )
 
 // GameServerLogic contains your actual game code.
 // It asks for the INTERFACE, not the struct.
 type GameServerLogic struct {
-	agones AgonesSDK
+	agones agonesmock.AgonesSDK
 }
 
 func (g *GameServerLogic) Start() {
@@ -23,17 +25,17 @@ func (g *GameServerLogic) Start() {
 }
 
 func main() {
-	var sdk AgonesSDK
+	var sdk agonesmock.AgonesSDK
 	var err error
 
 	// Check environment variable to decide which SDK to load
 	if os.Getenv("AGONES_ENV") == "local" {
 		log.Println("Initializing MOCK SDK...")
-		sdk, err = NewMockSDK() // From previous step
+		sdk, err = agonesmock.NewMockSDK() // From previous step
 	} else {
 		log.Println("Initializing REAL SDK...")
 		// var err error
-		sdk, err = NewRealSDK()
+		sdk, err = agonesmock.NewRealSDK()
 	}
 
 	if err != nil {
